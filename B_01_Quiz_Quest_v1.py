@@ -41,18 +41,12 @@ def int_check(question, low=None, high=None, exit_code=None):
 
     # if any integer is allowed...
     if low is None and high is None:
-        error = "Please enter an integer"
-
-    # if the number needs to be more than an
-    # integer (ie: rounds / 'high number')
-    elif low is not None and high is not None:
-        error = (f"Please enter an integer that is "
-                 f"more than {low} / equal {low}")
+        error = "Please enter an number!"
 
     # if the number needs to between low & high
     else:
-        error = (f"Please enter an integer that "
-                 f" is between {low} and {high} (inclusive)")
+        error = (f"Please enter an number that "
+                 f"is between {low} and {high} (inclusive)")
 
     while True:
         response = input(question).lower()
@@ -180,6 +174,7 @@ question_history = set()
 game_history = []
 all_scores = []
 
+# ask user for number of rounds / infinite mode
 num_rounds = int_check("Rounds <enter for infinite>: ",
                        low=1, exit_code="")
 
@@ -188,12 +183,12 @@ if num_rounds == "":
     num_rounds = 1
 
 # ask user if they want to customise the number range
-default_params = yes_no("Do you want to use the default game parameters? ")
+default_params = yes_no("Do you want to use the default game difficulty / parameters? ")
 if default_params == "yes":
     low_num = 1
     high_num = 100
 
-# allow user to choose low / high number
+# allow user to choose difficulty
 else:
 
     difficult = difficulty(
@@ -223,6 +218,7 @@ else:
         """)
         low_num = int_check("Low Number? ")
         high_num = int_check("High Number? ", low=low_num + 1)
+
 # Game loop starts
 while rounds_played < num_rounds:
 
@@ -232,6 +228,7 @@ while rounds_played < num_rounds:
     guesses_used = 0
     already_guessed = []
 
+    # pick question at random
     while True:
         operation = random.choice(["+", "-", "x", "/"])
         if operation == "+":
@@ -250,13 +247,16 @@ while rounds_played < num_rounds:
 
     user_answer = int_check(f"{question} = ", exit_code="xxx")
 
+    # if user has entered exit code, end game!!
     if user_answer == "xxx":
         rounds_played -= 1
         end_game = "yes"
         break
 
+    # if user answered right or wrong, print the right response
     if user_answer == answer:
         feedback = "✅✅✅ correct! Good Job! You got it! ✅✅✅"
+
     else:
         feedback = f"❌❌❌ WRONG! The answer is [{answer}], you silly! You'll get it eventually (maybe). ❌❌❌"
         rounds_lost += 1
@@ -273,12 +273,14 @@ while rounds_played < num_rounds:
     percent_won = rounds_won / rounds_played * 100
     percent_lost = rounds_lost / rounds_played * 100
 
+    # history
     history_feedback = (
         f"Question {rounds_played}: {num1} {op} {num2} = {answer} | {feedback} "
         f" won: {percent_won:.2f}% | Lost: {percent_lost:.2f}%"
     )
     game_history.append(history_feedback)
 
+# print history if the user wants it
 if rounds_played > 0:
     # calculate statistics
     rounds_won = rounds_played - rounds_lost
@@ -299,11 +301,12 @@ if rounds_played > 0:
         for item in game_history:
             print()
             print(item)
-
 if rounds_played == 0:
     percent_won = percent_lost = 0
     print()
     print("NO history available! Try actually playing the game. ")
 
 print()
-print("Thanks for playing !")
+print("!!! Thanks for playing !!!")
+
+
