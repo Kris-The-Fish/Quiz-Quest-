@@ -17,6 +17,26 @@ def yes_no(question):
         else:
             print("please enter yes / no")
 
+def difficulty(question):
+
+    """Checks user response to a questin is yes / no (y/), returns 'yes' or 'no' """
+
+    while True:
+
+        response = input(question).lower()
+
+        # check the user says yes / no / Y / n
+        if response == "easy" or response == "e":
+           return "easy"
+        elif response == "medium" or response == "m":
+            return "medium"
+        elif response == "hard" or response == "h":
+            return "hard"
+        elif response == "costume" or response == "c":
+            return "costume"
+        else:
+            print("please enter easy / medium / hard / costume")
+
 def int_check(question, low=None, high=None, exit_code=None):
 
     # if any integer is allowed...
@@ -92,7 +112,8 @@ def instructions():
 ------------------------------------------------------------------------
   You'll be ask questions a series of multiple different math questions.
 ------------------------------------------------------------------------
-- Choose how many rounds you would like, or press <enter> for infinity.  
+- Choose how many rounds you would like, or press <enter> for infinity. 
+- Choose the difficulty or just use the default difficulty (medium).   
 - Try to answer the questions the best you can!
 - You can exit the game by entering <xxx>.
 - at the end you'll be able to see your history, if you want.
@@ -166,7 +187,6 @@ if num_rounds == "":
     mode = "infinite"
     num_rounds = 1
 
-
 # ask user if they want to customise the number range
 default_params = yes_no("Do you want to use the default game parameters? ")
 if default_params == "yes":
@@ -175,22 +195,39 @@ if default_params == "yes":
 
 # allow user to choose low / high number
 else:
-    print("""
-                ⚠️⚠️⚠️ WARNING ⚠️⚠️⚠️
 
-        <0> does not work ! do NOT enter <0> ! 
-        However negative numbers do work. 
-        (also make sure you're using full numbers) 
+    difficult = difficulty(
+        "what difficulty would you like? (Easy, Medium, Hard) or type <costume> for costume parameter ")
 
-    """)
-    low_num = int_check("Low Number? ")
-    high_num = int_check("High Number? ", low=low_num + 1)
+    if difficult == "easy":
+        low_num = 1
+        high_num = 10
 
+    elif difficult == "medium":
+        low_num = 1
+        high_num = 100
+
+    elif difficult == "hard":
+        low_num = 1
+        high_num = 1000
+
+    else:
+
+        print("""
+                    ⚠️⚠️⚠️ WARNING ⚠️⚠️⚠️
+
+            <0> does not work ! do NOT enter <0> ! 
+            However negative numbers do work. 
+            (also make sure you're using full numbers) 
+
+        """)
+        low_num = int_check("Low Number? ")
+        high_num = int_check("High Number? ", low=low_num + 1)
 # Game loop starts
 while rounds_played < num_rounds:
 
     rounds_played += 1
-    print(f"\n💿💿💿 Question {rounds_played} {'(Infinite Mode)' if mode == 'infinite' else''} 💿💿💿 ")
+    print(f"\n💿💿💿 Question {rounds_played} / {num_rounds} {'(Infinite Mode)' if mode == 'infinite' else''} 💿💿💿 ")
 
     guesses_used = 0
     already_guessed = []
