@@ -43,11 +43,6 @@ def int_check(question, low=None, high=None, exit_code=None):
     if low is None and high is None:
         error = "Please enter an number!"
 
-    # if the number needs to between low & high
-    else:
-        error = (f"Please enter an number that "
-                 f"is between {low} and {high} (inclusive)")
-
     while True:
         response = input(question).lower()
 
@@ -58,17 +53,7 @@ def int_check(question, low=None, high=None, exit_code=None):
         try:
             response = int(response)
 
-            # Check the integer is not too low...
-            if low is not None and response < low:
-                print(error)
-
-            # check response is more than the low number
-            elif high is not None and response > high:
-                print(error)
-
-            # if the response is valid, return it
-            else:
-                return response
+            return response
 
 
         except ValueError:
@@ -129,10 +114,15 @@ def generate_subtraction(low, high):
 
 def generate_multiplication(low, high):
     for _ in range(1000):
+        i = random.randint(low, high)
         answer = random.randint(low, high)
 
-        factors = [(i, answer // i) for i in range(low, high + 1)
-                   if answer % i == 0 and low <= answer // i <= high]
+        factors = [(i, answer * i) for i in range(low, high + 1)
+                   if answer * i == 0 and low <= answer * i <= high]
+
+        if answer or i == 0:
+            continue
+
         if factors:
             num1, num2 = random.choice(factors)
             return num1, num2, answer, "x"
@@ -183,9 +173,9 @@ if num_rounds == "":
     num_rounds = 1
 
 # ask user if they want to customise the number range
-default_params = yes_no("Do you want to use the default game difficulty / parameters? ")
+default_params = yes_no("Do you want to use the default game difficulty? ")
 if default_params == "yes":
-    low_num = 1
+    low_num = 0
     high_num = 100
 
 # allow user to choose difficulty
@@ -245,7 +235,7 @@ while rounds_played < num_rounds:
             question_history.add(question)
             break
 
-    user_answer = int_check(f"{question} = ", exit_code="xxx")
+    user_answer = int_check(f"{question} = ", exit_code= "xxx")
 
     # if user has entered exit code, end game!!
     if user_answer == "xxx":
@@ -292,8 +282,8 @@ if rounds_played > 0:
     # output game statistics
     print()
     print("📊📊📊Game Statistics📊📊📊")
-    print(f"👍Won: {percent_won: .2f} \t "
-          f"😢Lost: {percent_lost:.2f} \t ")
+    print(f"👍Won: {percent_won: .2f}% \t "
+          f"😢Lost: {percent_lost:.2f}% \t ")
 
     # Ask user if they want to see their game history output if it requested
     see_history = string_checker("\nDo you want to see your Game History? ")
