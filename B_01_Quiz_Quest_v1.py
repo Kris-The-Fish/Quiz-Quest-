@@ -1,6 +1,7 @@
 
 import random
 
+
 def yes_no(question):
 
     """Checks user response to a questin is yes / no (y/), returns 'yes' or 'no' """
@@ -141,6 +142,9 @@ def generate_division(low, high):
     # fallback
     return generate_addition(low, high)
 
+def repeat_questions():
+    print()
+
 # Main routine
 print()
 print(" === Quiz Quest === ")
@@ -186,15 +190,15 @@ else:
 
     if difficult == "easy":
         low_num = 1
-        high_num = 10
+        high_num = 12
 
     elif difficult == "medium":
         low_num = 1
-        high_num = 100
+        high_num = 101
 
     elif difficult == "hard":
         low_num = 1
-        high_num = 1000
+        high_num = 2763
 
     else:
 
@@ -291,12 +295,21 @@ if rounds_played > 0:
         for item in game_history:
             print()
             print(item)
+
+        print("""
+        Just incase you forgot, here are the
+        📊📊📊Game Statistics📊📊📊 again
+        
+        👍Won: {percent_won: .2f}% \t
+        😢Lost: {percent_lost:.2f}% \t
+        """)
+
 if rounds_played == 0:
     percent_won = percent_lost = 0
     print()
     print("NO history available! Try actually playing the game. ")
 
+
 print()
 print("!!! Thanks for playing !!!")
-
 
