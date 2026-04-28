@@ -156,7 +156,7 @@ def generate_division(low, high):
         if low <= dividend <= high:
             return dividend, divisor, answer, "/"
     # fallback
-    return generate_addition(low, high)
+    return generate_division(low, high)
 
 # Main routine
 print()
@@ -192,6 +192,8 @@ if num_rounds == "":
     mode = "infinite"
     num_rounds = 1
     print("You are now in infinite mode !")
+else:
+    print(f"You've pick to do {num_rounds} rounds")
 print()
 
 # let user pick the operation (+, -, X, /)
@@ -221,7 +223,7 @@ elif difficult == "medium":
         high_num = 101
         print("You've picked medium")
 elif difficult == "hard":
-        low_num = 10
+        low_num = 1
         high_num = 2763
         print("You've picked hard")
 print()
@@ -238,7 +240,9 @@ while rounds_played < num_rounds:
     # pick question correctly
     while True:
 
-        if operation == "+":
+        if operation == "":
+            break
+        elif operation == "+":
             num1, num2, answer, op = generate_addition(low_num, high_num)
         elif operation == "-":
             num1, num2, answer, op = generate_subtraction(low_num, high_num)
@@ -247,13 +251,14 @@ while rounds_played < num_rounds:
         elif operation == "/":
             num1, num2, answer, op = generate_division(low_num, high_num)
 
+
+
         question = f"{num1} {op} {num2}"
         if question not in question_history:
             question_history.add(question)
             break
         else:
             break
-
 
     user_answer = int_check(f"{question} = ", exit_code= "xxx")
 
