@@ -357,6 +357,5 @@ if rounds_played == 0:
     print()
     print("NO history available! Try actually playing the game. ")
     print()
-print()
 
 print("!!! Thanks for playing !!!")
