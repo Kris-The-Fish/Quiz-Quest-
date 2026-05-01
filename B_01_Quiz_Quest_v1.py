@@ -59,7 +59,18 @@ def int_check(question, low=None, high=None, exit_code=None):
 
     # if any integer is allowed...
     if low is None and high is None:
-        error = "Please enter an number!"
+        error = "Please enter a Number"
+
+    # if the number needs to be more than an
+    # integer (ie: rounds / 'high number')
+    elif low is not None and high is not None:
+        error = (f"Please enter an number that is "
+                 f"more than 0")
+
+    # if the number needs to between low & high
+    else:
+        error = (f"Please enter an Number that "
+                 f" is more than 0")
 
     while True:
         response = input(question).lower()
@@ -71,10 +82,24 @@ def int_check(question, low=None, high=None, exit_code=None):
         try:
             response = int(response)
 
-            return response
+            # Check the integer is not too low...
+            if low is not None and response < low:
+                print()
+                print(error)
+
+            # check response is more than the low number
+            elif high is not None and response > high:
+                print()
+                print(error)
+
+            # if the response is valid, return it
+            else:
+                print()
+                return response
 
 
         except ValueError:
+            print()
             print(error)
 
 def string_checker(question, valid_ans=('yes', 'no')):
